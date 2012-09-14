@@ -5,12 +5,12 @@ import sys
 
 
 def checkout(repo_path='.', co_ref='HEAD'):
-"""
-    Checkout a reference from a Git repository
-    :param repo_path: <str> path of repository
-    :param co_ref: <str> name of checkout reference
-    :return: None
-"""
+    """
+        Checkout a reference from a Git repository
+        :param repo_path: <str> path of repository
+        :param co_ref: <str> name of checkout reference
+        :return: None
+    """
     repo = Repo(repo_path)
     obj_sto = repo.object_store
     tree_id = repo['HEAD'].tree
