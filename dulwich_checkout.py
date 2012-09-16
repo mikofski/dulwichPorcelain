@@ -22,6 +22,6 @@ def checkout(repo_path='.', co_ref='HEAD'):
         print 'creating %s in %s' % path
         path = os.path.join(*path)
         git_file = GitFile(path, 'wb')
-        git_file.write(repo.get_blob(entry.sha).data)
+        git_file.write(repo[entry.sha].data)
         git_file.close()
         os.chmod(path, entry_in_path.mode)
