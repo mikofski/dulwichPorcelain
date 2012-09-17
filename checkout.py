@@ -1,6 +1,7 @@
 from dulwich.repo import Repo
 from dulwich.file import ensure_dir_exists, GitFile
 import os
+from getopt import getopt
 
 
 def checkout(args):
@@ -22,7 +23,7 @@ def checkout(args):
         entry_in_path = entry.in_path(repo.path)
         path = os.path.split(entry_in_path.path)
         ensure_dir_exists(path[0])
-        if opts["verbose"]
+        if "--verbose" in opts:
             print 'creating %s in %s' % path
         path = os.path.join(*path)
         git_file = GitFile(path, 'wb')
