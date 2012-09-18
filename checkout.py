@@ -1,32 +1,30 @@
 from dulwich.repo import Repo
 from dulwich.file import ensure_dir_exists, GitFile
 import os
-from getopt import getopt
 
 
-def checkout(args):
+def checkout(repo_path='.', co_ref='HEAD'):
     """
-        Checkout a reference from a Git repository.
-        usage: dulwich checkout [--verbose] [REF]
+        Checkout a reference from a Git repository
+        :param repo_path: <str> path of repository
+        :param co_ref: <str> name of checkout reference
+        :return entries: <TreeEntry> named tuples
     """
-    opts, args = getopt(args, "", ["verbose"])
-    opts = dict(opts)
-    if len(args) > 0:
-        ref = args.pop(0)
-    else:
-        ref = 'HEAD'
-    # TODO: error out if unstaged or uncommited files
-    repo = Repo('.')
+    # TODO: catch not a repo
+    repo = Repo(repo_path)
     obj_sto = repo.object_store
+    # TODO: catch not a reference
+    tree_id = repo[co_ref].tree
+    # TODO: error out if unstaged or uncommited files
     tree_id = repo[ref].tree
+    entries = []
     for entry in obj_sto.iter_tree_contents(tree_id):
         entry_in_path = entry.in_path(repo.path)
         path = os.path.split(entry_in_path.path)
         ensure_dir_exists(path[0])
-        if "--verbose" in opts:
-            print 'creating %s in %s' % path
         path = os.path.join(*path)
-        git_file = GitFile(path, 'wb')
-        git_file.write(repo[entry_in_path.sha].data)
-        git_file.close()
+        with open(path, 'wb') as GitFile:
+            write(repo[entry_in_path.sha].data)
         os.chmod(path, entry_in_path.mode)
+        entries.append(entry)
+    return entries
