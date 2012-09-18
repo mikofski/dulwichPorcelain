@@ -5,12 +5,12 @@ import os
 
 def checkout(repo_path='.', co_ref='HEAD'):
     """
-        Checkout a reference from a Git repository
-        :param repo_path: <str> path of repository
-        :param co_ref: <str> name of checkout reference
-        :return entries: <TreeEntry> named tuples
+    Checkout a reference from a Git repository
+    :param repo_path: <str> path of repository
+    :param co_ref: <str> name of checkout reference
+    :return entries: <TreeEntry> named tuples
     """
-    # TODO: catch not a repo
+    # TODO: try using index.build_index_from_tree
     repo = Repo(repo_path)
     obj_sto = repo.object_store
     # TODO: catch not a reference

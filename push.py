@@ -1,14 +1,17 @@
 from dulwich.repo import Repo
 from dulwich.client import get_transport_and_path
-from getopt import getopt
 import sys
 
 
-def push(args):
-    opts, args = getopt(args, "", [])
-    opts = dict(opts)
-    client, path = get_transport_and_path(args.pop(0))
-    r = Repo(".")
+def push(remote_url, repo_path='.'):
+    """
+    Push to a remote repository
+    :param remote_url: <str> url of remote repository
+    :param repo_path: <str> path of local repository
+    :return refs: <dict> dictionary of ref-sha pairs
+    """
+    client, path = get_transport_and_path(remote_url)
+    r = Repo(repo_path)
     objsto = r.object_store
     refs = r.get_refs()
     def update_refs(old):
@@ -20,7 +23,7 @@ def push(args):
         dfky = list(set(refs) - set(new))
         dfrnt = dict([(k,refs[k]) for k in dfky if k != 'HEAD'])
         return dict(new.items() + dfrnt.items())
-    refs = client.send_pack(path,
+    return client.send_pack(path,
                             update_refs,
                             objsto.generate_pack_contents,
                             sys.stdout.write)
