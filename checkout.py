@@ -16,7 +16,6 @@ def checkout(repo_path='.', co_ref='HEAD'):
     # TODO: catch not a reference
     tree_id = repo[co_ref].tree
     # TODO: error out if unstaged or uncommited files
-    tree_id = repo[ref].tree
     entries = []
     for entry in obj_sto.iter_tree_contents(tree_id):
         entry_in_path = entry.in_path(repo.path)
