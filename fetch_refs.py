@@ -3,9 +3,9 @@
 import sys, os, csv
 from dulwich.repo import Repo
 from dulwich.client import get_transport_and_path
+from dulwich.errors import NotGitRepository
 from dulwich.file import ensure_dir_exists, GitFile
 from dulwich.config import ConfigFile
-from dulwichPorcelain import checkout
 
 DULWICH_REFS = 'dulwich_refs' # folder to save refs fetched by dulwich
 
@@ -17,9 +17,9 @@ def fetch_refs(remote_name = 'origin', local='.'):
     :param local: <str> full path to local repository, _default='.'_
     :return entries: <TreeEntry> named tuples
     """
+    #import rpdb; rpdb.set_trace()
     # **Fetch refs from remote**
     # create a dulwich Repo object from path to local repo
-    # TODO: check that repo exists, if not use Repo.init(local,mkdir=True)
     r = Repo(local)  # local repository
     objsto = r.object_store  # create a ObjectStore object from the local repo
     determine_wants = objsto.determine_wants_all  # built in dulwich function
@@ -48,15 +48,15 @@ def fetch_refs(remote_name = 'origin', local='.'):
         i_head = remote_refs.values().index(headref)  # index of head ref
         head_branch = remote_refs.keys()[i_head]  # name of head branch
         branch_key = head_branch.rsplit('/',1)[-1]  # branch
-        head_file = os.path.join(remote_dir, _branch_key)  # path to branch shas file
+        head_file = os.path.join(remote_dir, 'HEAD')  # path to branch shas file
         with open(head_file, 'wb') as GitFile:
-            write(branch_key)
+            GitFile.write('/'.join(['refs','remotes',remote_name,branch_key]) + '\n')
     # remote branch refs
     for key, value in remote_refs.items():
         key = key.rsplit('/',1)[-1]  # get just the remote's branch
         reffile = os.path.join(remote_dir, key)  # path to branch shas file
         with open(reffile, 'wb') as GitFile:
-            write(value)
+            GitFile.write(value + '\n')
     if headref:
         remote_refs['HEAD'] = headref  # restore HEAD sha
 

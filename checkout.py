@@ -23,7 +23,7 @@ def checkout(repo_path='.', co_ref='HEAD'):
         ensure_dir_exists(path[0])
         path = os.path.join(*path)
         with open(path, 'wb') as GitFile:
-            write(repo[entry_in_path.sha].data)
+            GitFile.write(repo[entry_in_path.sha].data)
         os.chmod(path, entry_in_path.mode)
         entries.append(entry)
     return entries
