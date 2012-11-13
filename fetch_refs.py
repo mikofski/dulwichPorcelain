@@ -49,8 +49,9 @@ def fetch_refs(remote_name = 'origin', local='.'):
         head_branch = remote_refs.keys()[i_head]  # name of head branch
         branch_key = head_branch.rsplit('/',1)[-1]  # branch
         head_file = os.path.join(remote_dir, 'HEAD')  # path to branch shas file
+        head_ref = '/'.join(['refs','remotes',remote_name,branch_key])
         with open(head_file, 'wb') as GitFile:
-            GitFile.write('/'.join(['refs','remotes',remote_name,branch_key]) + '\n')
+            GitFile.write('ref: ' + head_ref + '\n')
     # remote branch refs
     for key, value in remote_refs.items():
         key = key.rsplit('/',1)[-1]  # get just the remote's branch

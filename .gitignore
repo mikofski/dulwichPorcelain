@@ -30,3 +30,6 @@ pip-log.txt
 /.settings
 .project
 .pydevproject
+
+#test directory
+/testDulPorc
