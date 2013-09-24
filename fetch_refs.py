@@ -17,7 +17,6 @@ def fetch_refs(remote_name = 'origin', local='.'):
     :param local: <str> full path to local repository, _default='.'_
     :return entries: <TreeEntry> named tuples
     """
-    #import rpdb; rpdb.set_trace()
     # **Fetch refs from remote**
     # create a dulwich Repo object from path to local repo
     r = Repo(local)  # local repository
