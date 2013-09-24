@@ -3,7 +3,6 @@
 import sys, os, csv
 from dulwich.repo import Repo
 from dulwich.client import get_transport_and_path
-from dulwich.errors import NotGitRepository
 from dulwich.file import ensure_dir_exists
 from dulwich.config import ConfigFile
 
