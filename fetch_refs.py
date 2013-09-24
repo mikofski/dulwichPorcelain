@@ -4,7 +4,7 @@ import sys, os, csv
 from dulwich.repo import Repo
 from dulwich.client import get_transport_and_path
 from dulwich.errors import NotGitRepository
-from dulwich.file import ensure_dir_exists, GitFile
+from dulwich.file import ensure_dir_exists
 from dulwich.config import ConfigFile
 
 DULWICH_REFS = 'dulwich_refs' # folder to save refs fetched by dulwich
@@ -50,14 +50,14 @@ def fetch_refs(remote_name = 'origin', local='.'):
         branch_key = head_branch.rsplit('/',1)[-1]  # branch
         head_file = os.path.join(remote_dir, 'HEAD')  # path to branch shas file
         head_ref = '/'.join(['refs','remotes',remote_name,branch_key])
-        with open(head_file, 'wb') as GitFile:
-            GitFile.write('ref: ' + head_ref + '\n')
+        with open(head_file, 'wb') as f:
+            f.write('ref: ' + head_ref + '\n')
     # remote branch refs
     for key, value in remote_refs.items():
         key = key.rsplit('/',1)[-1]  # get just the remote's branch
         reffile = os.path.join(remote_dir, key)  # path to branch shas file
-        with open(reffile, 'wb') as GitFile:
-            GitFile.write(value + '\n')
+        with open(reffile, 'wb') as f:
+            f.write(value + '\n')
     if headref:
         remote_refs['HEAD'] = headref  # restore HEAD sha
 
